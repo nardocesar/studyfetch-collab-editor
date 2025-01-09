@@ -18,12 +18,12 @@
 
 ## 3. Real-time Collaboration Setup
 
-- [ ] Set up WebSocket server with Hocuspocus
-- [ ] Configure YJS integration
-- [ ] Implement collaboration provider
-- [ ] Add user presence indicators
-- [ ] Test multi-user editing
-- [ ] Implement URL-based document sharing
+- [x] Set up WebSocket server with Hocuspocus
+- [x] Configure YJS integration
+- [x] Implement collaboration provider
+- [x] Add user presence indicators
+- [x] Test multi-user editing
+- [x] Implement URL-based document sharing
 
 ## 4. Document Management
 
@@ -42,15 +42,7 @@
 - [ ] Add "Ask AI" button functionality
 - [ ] Create chat history component
 
-## 6. UI/UX Implementation
-
-- [ ] Design and implement split-screen layout
-- [ ] Style editor interface
-- [ ] Style chat interface
-- [ ] Add loading states and error handling
-- [ ] Implement responsive design
-
-## 7. Testing and Refinement
+## 6. Testing and Refinement
 
 - [ ] Test collaboration features
 - [ ] Test document saving/loading
@@ -58,9 +50,9 @@
 - [ ] Fix bugs and improve error handling
 - [ ] Optimize performance
 
-## 8. Deployment and Documentation
+## 7. Deployment and Documentation
 
-- [ ] Deploy to Vercel
+- [ ] Deploy to Amplify
 - [ ] Write README.md with setup instructions
 - [ ] Document environment variables
 - [ ] Add deployment instructions
