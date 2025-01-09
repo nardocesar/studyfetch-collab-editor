@@ -8,6 +8,7 @@ import { Controls } from "./Controls";
 import { useCollaboration } from "@/contexts/CollaborationContext";
 import { useEffect, useState } from "react";
 import "./Editor.css";
+import { StatusBar } from "./StatusBar";
 
 interface EditorProps {
   username: string;
@@ -26,7 +27,7 @@ const colors = [
 const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
 export default function Editor({ username }: EditorProps) {
-  const { provider, ydoc } = useCollaboration();
+  const { provider, ydoc, isSaving, lastSaved } = useCollaboration();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -77,7 +78,10 @@ export default function Editor({ username }: EditorProps) {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <Controls editor={editor} />
+      <div className="flex justify-between items-center mb-4">
+        <Controls editor={editor} />
+        <StatusBar isSaving={isSaving} lastSaved={lastSaved} />
+      </div>
       <div className="border rounded-lg shadow-sm mt-2 overflow-hidden">
         <EditorContent editor={editor} className="prose-lg" />
       </div>
