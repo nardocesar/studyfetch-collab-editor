@@ -1,0 +1,120 @@
+/* Collaboration cursor styles */
+.collaboration-cursor__caret {
+  position: relative;
+  margin-left: -1px;
+  margin-right: -1px;
+  border-left: 1px solid #0d0d0d;
+  border-right: 1px solid #0d0d0d;
+  word-break: normal;
+  pointer-events: none;
+}
+
+/* Cursor label */
+.collaboration-cursor__label {
+  position: absolute;
+  top: -1.4em;
+  left: -1px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  white-space: nowrap;
+  color: #fff;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Editor content styles */
+.ProseMirror {
+  min-height: 300px;
+  padding: 1rem;
+  outline: none;
+}
+
+.ProseMirror p.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Improve heading hierarchy visibility */
+.ProseMirror h1 {
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+}
+
+.ProseMirror h2 {
+  font-size: 1.5em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+}
+
+.ProseMirror h3 {
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+/* Lists styling */
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5em;
+}
+
+/* Code blocks */
+.ProseMirror pre {
+  background: #0d0d0d;
+  color: #fff;
+  font-family: "JetBrainsMono", monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.ProseMirror code {
+  background: none;
+  color: inherit;
+  font-size: 0.8rem;
+}
+
+/* Blockquote styling */
+.ProseMirror blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid #0d0d0d;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Selection styling */
+.ProseMirror ::selection {
+  background: #b4d5ff;
+}
+
+/* Table styling */
+.ProseMirror table {
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.ProseMirror td,
+.ProseMirror th {
+  border: 2px solid #ced4da;
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 3px 5px;
+  position: relative;
+  vertical-align: top;
+}
+
+.ProseMirror th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-align: left;
+}
