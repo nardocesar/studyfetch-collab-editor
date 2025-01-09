@@ -4,17 +4,17 @@
 
 - [x] Initialize Next.js 14+ project with TypeScript
 - [x] Set up Tailwind CSS
-- [ ] Configure project structure and essential dependencies
-- [ ] Create .env.example and .env files
-- [ ] Set up GitHub repository
+- [x] Configure project structure and essential dependencies
+- [x] Create .env.example and .env files
+- [x] Set up GitHub repository
 
 ## 2. Basic Editor Implementation
 
-- [ ] Install and configure TipTap
-- [ ] Create basic editor component
-- [ ] Implement basic styling
-- [ ] Add toolbar with essential formatting options
-- [ ] Test basic editor functionality
+- [x] Install and configure TipTap
+- [x] Create basic editor component
+- [x] Implement basic styling
+- [x] Add toolbar with essential formatting options
+- [x] Test basic editor functionality
 
 ## 3. Real-time Collaboration Setup
 
