@@ -1,18 +1,26 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Editor from "@/components/Editor/Editor";
 import Login from "@/components/Login/Login";
 import { CollaborationProvider } from "@/contexts/CollaborationContext";
+import { useUser } from "@/hooks/useUser";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 
 export default function DocumentPage() {
   const params = useParams();
-  const [username, setUsername] = useState<string | null>(null);
+  const router = useRouter();
+  const { username, login, logout } = useUser();
   const documentId = params.documentId as string;
 
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
   if (!username) {
-    return <Login onLogin={setUsername} />;
+    return <Login onLogin={login} />;
   }
 
   return (
@@ -21,10 +29,13 @@ export default function DocumentPage() {
         <header className="border-b p-4">
           <div className="max-w-4xl mx-auto flex justify-between items-center">
             <h1 className="text-lg font-semibold">Document: {documentId}</h1>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               <span className="text-sm text-muted-foreground">
                 Logged in as {username}
               </span>
+              <Button variant="ghost" size="icon" onClick={handleLogout}>
+                <LogOut className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </header>

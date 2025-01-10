@@ -4,13 +4,13 @@ import { HocuspocusProvider } from "@hocuspocus/provider";
 import { createContext, useContext, useEffect, useState } from "react";
 import * as Y from "yjs";
 import { saveToS3, loadFromS3 } from "@/lib/s3-client";
-import { debounce } from "lodash";
 
 interface CollaborationContextType {
   provider: HocuspocusProvider | null;
   ydoc: Y.Doc | null;
   isSaving: boolean;
   lastSaved: Date | null;
+  saveDocument: () => Promise<void>;
 }
 
 const CollaborationContext = createContext<CollaborationContextType>({
@@ -18,6 +18,7 @@ const CollaborationContext = createContext<CollaborationContextType>({
   ydoc: null,
   isSaving: false,
   lastSaved: null,
+  saveDocument: async () => {},
 });
 
 export function CollaborationProvider({
@@ -33,6 +34,21 @@ export function CollaborationProvider({
   const [ydoc] = useState(() => new Y.Doc());
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+  const saveDocument = async () => {
+    if (!ydoc) return;
+
+    setIsSaving(true);
+    try {
+      const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
+      await saveToS3(documentId, prosemirrorNode.toJSON());
+      setLastSaved(new Date());
+    } catch (error) {
+      console.error("Error saving content:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // Load initial content
   useEffect(() => {
@@ -62,36 +78,6 @@ export function CollaborationProvider({
     loadContent();
   }, [documentId, ydoc]);
 
-  // Save changes
-  useEffect(() => {
-    if (!ydoc) return;
-
-    const debouncedSave = debounce(async () => {
-      setIsSaving(true);
-      try {
-        const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
-        await saveToS3(documentId, prosemirrorNode.toJSON());
-        setLastSaved(new Date());
-      } catch (error) {
-        console.error("Error saving content:", error);
-      } finally {
-        setIsSaving(false);
-      }
-    }, 2000);
-
-    const observer = () => {
-      debouncedSave();
-    };
-
-    const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
-    prosemirrorNode.observe(observer);
-
-    return () => {
-      prosemirrorNode.unobserve(observer);
-      debouncedSave.cancel();
-    };
-  }, [documentId, ydoc]);
-
   // Provider setup
   useEffect(() => {
     const newProvider = new HocuspocusProvider({
@@ -110,7 +96,7 @@ export function CollaborationProvider({
 
   return (
     <CollaborationContext.Provider
-      value={{ provider, ydoc, isSaving, lastSaved }}
+      value={{ provider, ydoc, isSaving, lastSaved, saveDocument }}
     >
       {children}
     </CollaborationContext.Provider>

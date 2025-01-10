@@ -8,7 +8,7 @@ import { Controls } from "./Controls";
 import { useCollaboration } from "@/contexts/CollaborationContext";
 import { useEffect, useState } from "react";
 import "./Editor.css";
-import { StatusBar } from "./StatusBar";
+import { SaveButton } from "./SaveButton";
 
 interface EditorProps {
   username: string;
@@ -27,8 +27,9 @@ const colors = [
 const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
 export default function Editor({ username }: EditorProps) {
-  const { provider, ydoc, isSaving, lastSaved } = useCollaboration();
+  const { provider, ydoc, lastSaved } = useCollaboration();
   const [isReady, setIsReady] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   useEffect(() => {
     if (provider && ydoc) {
@@ -72,6 +73,41 @@ export default function Editor({ username }: EditorProps) {
     [provider, ydoc, isReady]
   );
 
+  useEffect(() => {
+    if (!editor) return;
+
+    const handleUpdate = () => {
+      setHasUnsavedChanges(true);
+    };
+
+    editor.on("update", handleUpdate);
+
+    return () => {
+      editor.off("update", handleUpdate);
+    };
+  }, [editor]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [hasUnsavedChanges]);
+
+  useEffect(() => {
+    if (lastSaved) {
+      setHasUnsavedChanges(false);
+    }
+  }, [lastSaved]);
+
   if (!editor || !provider || !isReady) {
     return <div>Loading...</div>;
   }
@@ -80,7 +116,7 @@ export default function Editor({ username }: EditorProps) {
     <div className="w-full max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-4">
         <Controls editor={editor} />
-        <StatusBar isSaving={isSaving} lastSaved={lastSaved} />
+        <SaveButton />
       </div>
       <div className="border rounded-lg shadow-sm mt-2 overflow-hidden">
         <EditorContent editor={editor} className="prose-lg" />
