@@ -21,6 +21,8 @@ const CollaborationContext = createContext<CollaborationContextType>({
   saveDocument: async () => {},
 });
 
+const ydoc = new Y.Doc();
+
 export function CollaborationProvider({
   children,
   documentId,
@@ -31,7 +33,6 @@ export function CollaborationProvider({
   username: string;
 }) {
   const [provider, setProvider] = useState<HocuspocusProvider | null>(null);
-  const [ydoc] = useState(() => new Y.Doc());
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
@@ -83,7 +84,7 @@ export function CollaborationProvider({
     };
 
     loadContent();
-  }, [documentId, ydoc]);
+  }, [documentId]);
 
   // Provider setup
   useEffect(() => {
@@ -99,7 +100,7 @@ export function CollaborationProvider({
     return () => {
       newProvider.destroy();
     };
-  }, [documentId, username, ydoc]);
+  }, [documentId, username]);
 
   return (
     <CollaborationContext.Provider
