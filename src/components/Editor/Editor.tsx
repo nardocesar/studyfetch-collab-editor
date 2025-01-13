@@ -49,7 +49,7 @@ export default function Editor({ username }: EditorProps) {
         }),
         Collaboration.configure({
           document: ydoc,
-          field: "content",
+          field: "prosemirror",
         }),
         ...(isReady
           ? [
@@ -69,6 +69,7 @@ export default function Editor({ username }: EditorProps) {
             "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
         },
       },
+      immediatelyRender: false,
     },
     [provider, ydoc, isReady]
   );
