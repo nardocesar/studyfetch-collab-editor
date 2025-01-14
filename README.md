@@ -11,7 +11,16 @@ A real-time collaborative document editor with integrated AI assistance, built w
 
 ## Environment Setup
 
-Create a `.env` file in the root directory based on the `.env.example` file.
+Create a `.env` file in the root directory with the following envs:
+
+```
+NEXT_PUBLIC_AWS_ACCESS_KEY_ID=AKIAWCYYABYXLRC4WF5F
+NEXT_PUBLIC_AWS_REGION=us-east-1
+NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY=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
+NEXT_PUBLIC_OPENAI_API_KEY=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
+NEXT_PUBLIC_S3_BUCKET_NAME=collab-doc-editor
+NEXT_PUBLIC_WEBSOCKET_URL=ws://127.0.0.1:1234
+```
 
 ## Installation
 
