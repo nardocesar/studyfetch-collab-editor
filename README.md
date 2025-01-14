@@ -11,7 +11,18 @@ A real-time collaborative document editor with integrated AI assistance, built w
 
 ## Environment Setup
 
-Create a `.env` file in the root directory based on the `.env.example` file.
+Create a `.env` file in the root directory ~~based on the `.env.example` file.~~ with the following variables:
+
+```
+NEXT_PUBLIC_AWS_ACCESS_KEY_ID
+NEXT_PUBLIC_AWS_REGION
+NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY
+NEXT_PUBLIC_OPENAI_API_KEY
+NEXT_PUBLIC_S3_BUCKET_NAME
+NEXT_PUBLIC_WEBSOCKET_URL
+```
+
+As it's not possible to add the `.env` file to the repository, ask me for the values and I'll send them to you via email or Discord.
 
 ## Installation
 
