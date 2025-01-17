@@ -2,6 +2,8 @@
 
 A real-time collaborative document editor with integrated AI assistance, built with Next.js 14, TipTap, and YJS.
 
+Live URL: [https://main.d2xbhqdory95bo.amplifyapp.com/](https://main.d2xbhqdory95bo.amplifyapp.com/)
+
 ## Prerequisites
 
 - Node.js 18+
