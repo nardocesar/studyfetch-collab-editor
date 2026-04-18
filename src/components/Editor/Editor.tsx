@@ -49,7 +49,6 @@ export default function Editor({ username }: EditorProps) {
         }),
         Collaboration.configure({
           document: ydoc,
-          field: "prosemirror",
         }),
         ...(isReady
           ? [
@@ -73,20 +72,6 @@ export default function Editor({ username }: EditorProps) {
     },
     [provider, ydoc, isReady]
   );
-
-  useEffect(() => {
-    if (!editor) return;
-
-    const handleUpdate = () => {
-      setHasUnsavedChanges(true);
-    };
-
-    editor.on("update", handleUpdate);
-
-    return () => {
-      editor.off("update", handleUpdate);
-    };
-  }, [editor]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {

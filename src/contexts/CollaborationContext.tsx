@@ -21,7 +21,7 @@ const CollaborationContext = createContext<CollaborationContextType>({
   saveDocument: async () => {},
 });
 
-const ydoc = new Y.Doc();
+const ydoc = new Y.Doc(); // Initialize Y.Doc for shared editing
 
 export function CollaborationProvider({
   children,
@@ -41,15 +41,10 @@ export function CollaborationProvider({
 
     setIsSaving(true);
     try {
-      const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
+      const prosemirrorNode = ydoc.getXmlFragment();
       const content = prosemirrorNode.toJSON();
 
-      const documentData = {
-        content: content.length > 0 ? content : null,
-        updatedAt: new Date().toISOString(),
-      };
-
-      await saveToS3(documentId, documentData);
+      await saveToS3(documentId, content);
       setLastSaved(new Date());
     } catch (error) {
       console.error("Error saving content:", error);
@@ -64,17 +59,20 @@ export function CollaborationProvider({
       try {
         const savedContent = await loadFromS3(documentId);
         if (savedContent && ydoc) {
-          const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
+          const prosemirrorNode = ydoc.getXmlFragment();
           if (savedContent.content) {
             // Clear existing content
             prosemirrorNode.delete(0, prosemirrorNode.length);
             // Insert new content
             prosemirrorNode.insert(0, [savedContent.content]);
+
+            console.log("Loaded content:", savedContent.content);
+            console.log("Prosemirror node:", prosemirrorNode);
           }
         } else {
           // Initialize with empty content for new documents
           console.log("Creating new document...");
-          const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
+          const prosemirrorNode = ydoc.getXmlFragment();
           // You can set default content here if needed
           await saveToS3(documentId, prosemirrorNode.toJSON());
         }
