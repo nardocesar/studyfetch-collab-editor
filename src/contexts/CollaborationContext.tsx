@@ -41,7 +41,14 @@ export function CollaborationProvider({
     setIsSaving(true);
     try {
       const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
-      await saveToS3(documentId, prosemirrorNode.toJSON());
+      const content = prosemirrorNode.toJSON();
+
+      const documentData = {
+        content: content.length > 0 ? content : null,
+        updatedAt: new Date().toISOString(),
+      };
+
+      await saveToS3(documentId, documentData);
       setLastSaved(new Date());
     } catch (error) {
       console.error("Error saving content:", error);
