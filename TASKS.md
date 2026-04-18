@@ -63,5 +63,8 @@
 - Each task should be completed and tested before moving to the next
 - Focus on functionality first, then improve UI/UX
 - Keep code modular and maintainable
-- Document as you go
-- Commit frequently with clear messages
+
+## Possible improvements
+
+- Unit tests and e2e tests
+- Error handling
