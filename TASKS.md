@@ -27,8 +27,8 @@
 
 ## 4. Document Management
 
-- [ ] Set up AWS S3 configuration
-- [ ] Implement document saving functionality
+- [x] Set up AWS S3 configuration
+- [x] Implement document saving functionality
 - [ ] Add document loading from S3
 - [ ] Create simple name-based login system
 - [ ] Implement document persistence across page refreshes
@@ -52,9 +52,9 @@
 
 ## 7. Deployment and Documentation
 
-- [ ] Deploy to Amplify
-- [ ] Write README.md with setup instructions
-- [ ] Document environment variables
+- [x] Deploy to Amplify
+- [x] Write README.md with setup instructions
+- [x] Document environment variables
 - [ ] Add deployment instructions
 - [ ] Create demo document
 
