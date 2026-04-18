@@ -37,12 +37,25 @@ export function CollaborationProvider({
   // Load initial content
   useEffect(() => {
     const loadContent = async () => {
-      const savedContent = await loadFromS3(documentId);
-      if (savedContent && ydoc) {
-        const content = savedContent.content;
-        const ytext = ydoc.getText("content");
-        ytext.delete(0, ytext.length);
-        ytext.insert(0, content);
+      try {
+        const savedContent = await loadFromS3(documentId);
+        if (savedContent && ydoc) {
+          const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
+          if (savedContent.content) {
+            // Clear existing content
+            prosemirrorNode.delete(0, prosemirrorNode.length);
+            // Insert new content
+            prosemirrorNode.insert(0, [savedContent.content]);
+          }
+        } else {
+          // Initialize with empty content for new documents
+          console.log("Creating new document...");
+          const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
+          // You can set default content here if needed
+          await saveToS3(documentId, prosemirrorNode.toJSON());
+        }
+      } catch (error) {
+        console.error("Error loading content:", error);
       }
     };
 
@@ -55,20 +68,26 @@ export function CollaborationProvider({
 
     const debouncedSave = debounce(async () => {
       setIsSaving(true);
-      const content = ydoc.getText("content").toString();
-      await saveToS3(documentId, content);
-      setIsSaving(false);
-      setLastSaved(new Date());
+      try {
+        const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
+        await saveToS3(documentId, prosemirrorNode.toJSON());
+        setLastSaved(new Date());
+      } catch (error) {
+        console.error("Error saving content:", error);
+      } finally {
+        setIsSaving(false);
+      }
     }, 2000);
 
     const observer = () => {
       debouncedSave();
     };
 
-    ydoc.getText("content").observe(observer);
+    const prosemirrorNode = ydoc.get("prosemirror", Y.XmlFragment);
+    prosemirrorNode.observe(observer);
 
     return () => {
-      ydoc.getText("content").unobserve(observer);
+      prosemirrorNode.unobserve(observer);
       debouncedSave.cancel();
     };
   }, [documentId, ydoc]);
